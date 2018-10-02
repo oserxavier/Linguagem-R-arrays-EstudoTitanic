@@ -1,0 +1,145 @@
+---
+title: "arrays - Caso Titanic"
+author: "Osemar Xavier"
+date: "25 de setembro de 2018"
+output: html_document
+---
+
+##### Arrays
+##### Criando um Array com 3 dimensões e 24 elementos 
+```{r}
+ar1 <-  array(1:24, dim = c(3, 4, 2))
+
+ar1
+
+ar1[, , ]
+```
+##### Colunas 2 e 3 -> todas as faces e todas linhas 
+```{r}
+ar1[, 2:3, ]
+```
+##### Somente a segunda linha da primeira dimensão
+```{r}
+ar1[2, , 1]
+```
+##### Somando todos os elementos da primeira dimensão
+```{r}
+sum(ar1[, ,1])
+```
+##### Somatorio da primeira linha da primeira dimensão
+```{r}
+sum(ar1[1, , 1])
+```
+##### Nomeando as dimensões 
+```{r}
+dimnames(ar1)
+dimnames(ar1) <-  list(c("Baixo", "Medio", "Alto"),
+                       paste("col", 1:4, sep=""),
+                       c("Masculino", "Feminino"))
+
+dimnames(ar1)
+```
+##### Help da função array
+```{r}
+help("array")
+```
+##### Exemplo de array dimensões 
+##### Analisando o dataset 'Titanic' 
+```{r}
+data("Titanic")
+Titanic
+```
+### Somatorio do número de passageiros a bordo
+```{r}
+sum(Titanic)
+```
+### Dim -> Função que obtém as dimensões de uma matriz 
+```{r}
+dim(Titanic)
+```
+#dimnames -> Nome de dimensão de um objeto de dados, nesse caso "Titanic"
+```{r}
+dimnames(Titanic)
+```
+### Somatorio dos passageiros da classe crew
+```{r}
+sum(Titanic[4,  , ,])
+```
+### Fazendo o levantamento de quantas sobreviveram (Yes/ No)
+### Dimensão -> 4, -> Survived
+```{r}
+apply(Titanic, 4, sum)
+```
+### Dimensão -> 4, -> Survived YES
+```{r}
+apply(Titanic, 4, sum)[2]
+```
+### Mesma análise, considerando Survived YES
+```{r}
+sum(Titanic[, , ,2])
+```
+### As dimensões do dataset Titanic
+```{r}
+Titanic
+dimnames(Titanic)
+```
+### Fazendo uma análise considerando o total de passageiros quanto ao sexo
+### Dimensão 2 -> Sexo
+```{r}
+apply(Titanic, 2 , sum)
+```
+### Análise de sobreviventes por sexo 
+```{r}
+apply(Titanic[, , ,2], 2, sum)
+```
+### Porcentagem dos que sobreviveram de cada sexo
+```{r}
+100 * apply(Titanic[, , ,2], 2, sum)  / apply(Titanic, 2 , sum)
+```
+
+### Porcentagem dos que sobreviveram 
+### Crianças -> 
+```{r}
+Titanic[, ,1,]
+```
+### Somatorio da idade -> crianças
+```{r}
+apply(Titanic, 3, sum)
+
+100 * apply(Titanic[,,1,], 3, sum)[2] / sum(Titanic)
+
+
+100 * (apply(Titanic[,,1,], 3, sum) / apply(Titanic, 3, sum)[1])[2]
+```
+### margin.table -> calcula a soma das entradas da matriz para um determinado índice.
+### Nesse caso, o somatório de passageiros por classe
+### class
+```{r}
+margin.table(Titanic, margin  = 1)
+```
+### A mesma aplicação para somatório total por sexo
+### sex
+```{r}
+margin.table(Titanic, margin  = 2)
+```
+### A mesma aplicação para somatório total por idade
+### age
+```{r}
+margin.table(Titanic, margin  = 3)
+```
+### A mesma aplicação para somatório total por sobreviventes
+### survived
+```{r}
+margin.table(Titanic, margin  = 4)
+```
+### Indices multiplos -> sexo e sobreviventes 
+```{r}
+margin.table(Titanic, margin  = c(2, 4))
+```
+
+### Porcentagem dos que sobreviventes, por sexo -> margin
+```{r}
+(prop.table( margin.table(Titanic,  margin = c(2, 4)), margin = 1) * 100)[, 2]
+
+prop.table( margin.table(Titanic,  margin = c(2, 4)), margin = 1) * 100
+```
